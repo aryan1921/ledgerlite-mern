@@ -6,19 +6,65 @@ const r = Router();
 r.use(auth);
 
 // GET /api/expenses
+// GET /api/expenses
 r.get("/", async (req, res) => {
-  const { page=1, limit=10, category, reimbursable, q, sort="-createdAt" } = req.query;
+  const {
+    page = 1,
+    limit = 10,
+    category,
+    reimbursable,
+    q,
+    sort = "-createdAt",
+    from,
+    to,
+  } = req.query;
+
   const filter = { userId: req.user.id };
+
   if (category) filter.category = category;
-  if (reimbursable !== undefined) filter.reimbursable = reimbursable === "true";
+
+  // keep your semantics, but ignore invalid values
+  if (typeof reimbursable !== "undefined") {
+    if (reimbursable === "true" || reimbursable === "false") {
+      filter.reimbursable = reimbursable === "true";
+    }
+  }
+
   if (q) filter.title = { $regex: q, $options: "i" };
 
+  // NEW: optional date window on createdAt
+  if (from || to) {
+    filter.createdAt = {};
+    if (from) {
+      const f = new Date(from);
+      if (isNaN(f)) return res.status(400).json({ error: "Invalid 'from' date" });
+      filter.createdAt.$gte = f;
+    }
+    if (to) {
+      const t = new Date(to);
+      if (isNaN(t)) return res.status(400).json({ error: "Invalid 'to' date" });
+      filter.createdAt.$lte = t;
+    }
+  }
+
+  const nPage = Number(page) || 1;
+  const nLimit = Math.max(1, Number(limit) || 10);
+  const skip = (nPage - 1) * nLimit;
+
   const [items, total] = await Promise.all([
-    Expense.find(filter).sort(String(sort)).skip((+page-1)*(+limit)).limit(+limit),
-    Expense.countDocuments(filter)
+    Expense.find(filter).sort(String(sort)).skip(skip).limit(nLimit),
+    Expense.countDocuments(filter),
   ]);
-  res.json({ items, total, pages: Math.ceil(total/limit), page:+page, limit:+limit });
+
+  res.json({
+    items,
+    total,
+    pages: Math.ceil(total / nLimit),
+    page: nPage,
+    limit: nLimit,
+  });
 });
+
 
 // POST /api/expenses
 r.post("/", async (req, res) => {
