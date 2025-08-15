@@ -13,6 +13,10 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors({ origin: process.env.CORS_ORIGIN?.split(",") || "*", credentials: true }));
 
+app.get("/", (_req, res) => {
+  res.send("LedgerLite API is running. Try /api/health");
+});
+
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
