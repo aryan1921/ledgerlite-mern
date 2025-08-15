@@ -19,7 +19,7 @@
 8. **bbc94bb** — Added User model with password hashing for secure login.  
 9. **4eeae70** — Added Expense model with schema and validation logic.  
 10. **6ee336e** — Implemented routes to handle CRUD operations for expenses
-
+11. **4eeae70** -Added the Expense model
 
 
 
