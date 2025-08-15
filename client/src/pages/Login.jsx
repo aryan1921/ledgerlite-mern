@@ -14,8 +14,11 @@ export default function Login() {
     setErr("");
     setLoading(true);
     try {
-      const { token } = await login(email, password);
+      const response = await login(email, password);
+      const { token } = response;
       localStorage.setItem("token", token);
+      // Dispatch custom event to trigger re-render
+      window.dispatchEvent(new Event('authChange'));
       nav("/", { replace: true });
     } catch (ex) {
       setErr(ex?.response?.data?.error || "Login failed");
