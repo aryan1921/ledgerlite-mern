@@ -22,4 +22,12 @@
 11. **4eeae70** -Added the Expense model
 
 
+## Further development (next ~10 commits)
+![Commit log](postman-documentation.png)
+
+### Checkpoint descriptions:
+1. **19c6297** — Done with API testing and documentation.  
+2. **58636ce** — Updated Postman collection.  
+3. **154f731** — Added the architecture.md file.  
+4. **1b70fb8** — Updated commits.md.  
 
