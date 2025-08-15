@@ -24,16 +24,27 @@ function timeAgo(iso) {
 export default function Dashboard() {
   const qc = useQueryClient();
 
-  // filters + paging
+
   const [page, setPage] = useState(1);
   const [q, setQ] = useState("");
   const [category, setCategory] = useState("");
   const [reimbursable, setReimb] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
-  const params = useMemo(
-    () => ({ page, limit: 10, q, category, reimbursable, sort: "-createdAt" }),
-    [page, q, category, reimbursable]
-  );
+
+  const params = useMemo(() => ({
+    page,
+    limit: 10,
+    q,
+    category,
+    reimbursable,
+    sort: "-createdAt",
+
+    from: fromDate || undefined,
+    to: toDate || undefined,
+  }), [page, q, category, reimbursable, fromDate, toDate]);
+
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["expenses", params],
@@ -41,12 +52,21 @@ export default function Dashboard() {
     keepPreviousData: true,
   });
 
-  // quick add (minimal)
+
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [taxRate, setTax] = useState("");
   const [catNew, setCatNew] = useState("");
   const [reimbNew, setReimbNew] = useState("false");
+
+  const setThisMonth = () => {
+    const now = new Date();
+    const y = now.getFullYear(), m = now.getMonth(); // 0-based
+    const pad = (n) => String(n).padStart(2, "0");
+    const last = new Date(y, m + 1, 0).getDate();
+    setFromDate(`${y}-${pad(m + 1)}-01`);
+    setToDate(`${y}-${pad(m + 1)}-${pad(last)}`);
+  };
 
   const mCreate = useMutation({
     mutationFn: createExpense,
@@ -60,7 +80,8 @@ export default function Dashboard() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["expenses"] }),
   });
 
-  useEffect(() => { setPage(1); }, [q, category, reimbursable]);
+  useEffect(() => { setPage(1); }, [q, category, reimbursable, fromDate, toDate]);
+
 
   const items = data?.items ?? [];
   const total = data?.total ?? 0;
@@ -71,7 +92,8 @@ export default function Dashboard() {
   const pageTotal = items.reduce((sum, e) => sum + (Number(e.total) || 0), 0);
   const reimbCount = items.filter(e => e.reimbursable).length;
 
-  const hasActiveFilters = !!q || !!category || !!reimbursable;
+  const hasActiveFilters = !!q || !!category || !!reimbursable || !!fromDate || !!toDate;
+
 
   return (
     <div className="max-w-6xl mx-auto space-y-5">
@@ -95,6 +117,24 @@ export default function Dashboard() {
       {/* Filters */}
       <div className="border rounded-xl p-3 space-y-2">
         <div className="flex flex-wrap gap-2">
+          <input
+            type="date"
+            className="border p-2 rounded-md"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+            title="From date"
+          />
+          <input
+            type="date"
+            className="border p-2 rounded-md"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+            title="To date"
+          />
+
+          <button className="border px-3 py-2 rounded-md" onClick={setThisMonth}>
+            This month
+          </button>
           <input
             className="border p-2 rounded-md"
             placeholder="Search title…"
@@ -127,17 +167,20 @@ export default function Dashboard() {
           {hasActiveFilters && (
             <button
               className="border px-3 py-2 rounded-md"
-              onClick={() => { setQ(""); setCategory(""); setReimb(""); }}
+              onClick={() => { setQ(""); setCategory(""); setReimb(""); setFromDate(""); setToDate(""); }}
               title="Clear all filters"
             >
               Clear filters
             </button>
           )}
+
         </div>
 
         {/* Active filters badges */}
         {hasActiveFilters && (
           <div className="flex flex-wrap gap-2 pt-1">
+            {fromDate ? <Badge color="yellow">from: {fromDate}</Badge> : null}
+            {toDate ? <Badge color="yellow">to: {toDate}</Badge> : null}
             {q ? <Badge color="blue">q: “{q}”</Badge> : null}
             {category ? <Badge color="purple">category: {category}</Badge> : null}
             {reimbursable ? <Badge color={reimbursable === "true" ? "green" : "red"}>
@@ -151,14 +194,14 @@ export default function Dashboard() {
       <div className="border rounded-xl p-4">
         <div className="font-medium mb-2">Quick add</div>
         <div className="grid md:grid-cols-5 gap-2">
-          <input className="border p-2 rounded-md" placeholder="Title" value={title} onChange={(e)=>setTitle(e.target.value)} />
-          <input className="border p-2 rounded-md" placeholder="Amount" type="number" value={amount} onChange={(e)=>setAmount(e.target.value)} />
-          <input className="border p-2 rounded-md" placeholder="Tax %" type="number" value={taxRate} onChange={(e)=>setTax(e.target.value)} />
-          <select className="border p-2 rounded-md" value={catNew} onChange={(e)=>setCatNew(e.target.value)}>
+          <input className="border p-2 rounded-md" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input className="border p-2 rounded-md" placeholder="Amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <input className="border p-2 rounded-md" placeholder="Tax %" type="number" value={taxRate} onChange={(e) => setTax(e.target.value)} />
+          <select className="border p-2 rounded-md" value={catNew} onChange={(e) => setCatNew(e.target.value)}>
             <option value="">Category</option>
             <option>Food</option><option>Travel</option><option>Office</option><option>Other</option>
           </select>
-          <select className="border p-2 rounded-md" value={reimbNew} onChange={(e)=>setReimbNew(e.target.value)}>
+          <select className="border p-2 rounded-md" value={reimbNew} onChange={(e) => setReimbNew(e.target.value)}>
             <option value="false">Non-reimbursable</option>
             <option value="true">Reimbursable</option>
           </select>
