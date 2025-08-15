@@ -27,7 +27,7 @@ export default function Login() {
       // notify app-wide listeners that auth changed (your requirement)
       window.dispatchEvent(new Event("authChange"));
       // go to dashboard
-      nav("/", { replace: true });
+      nav("/dashboard", { replace: true });
     } catch (ex) {
       const msg =
         ex?.response?.data?.error ||
