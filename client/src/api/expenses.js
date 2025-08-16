@@ -68,16 +68,4 @@ export function removeExpense(id) {
   return api.delete(`/expenses/${id}`).then((r) => r.data);
 }
 
-/* -----------------------------------------------------------
-   Optional helper you can import in the Dashboard:
 
-   // Get the YYYY-MM-DD range for a given month
-   export function monthRange(year, monthIndexZeroBased) {
-     const y = Number(year), m = Number(monthIndexZeroBased);
-     const pad = (n) => String(n).padStart(2, "0");
-     const start = `${y}-${pad(m + 1)}-01`;
-     const lastDay = new Date(y, m + 1, 0).getDate();
-     const end = `${y}-${pad(m + 1)}-${pad(lastDay)}`;
-     return { from: start, to: end };
-   }
------------------------------------------------------------ */
