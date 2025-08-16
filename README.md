@@ -1,6 +1,13 @@
 <h1 align="center">Ledgerlite — MERN Expense Manager</h1>
 <p align="center">A minimalist, fast expense manager with JWT auth, server-side filters (including date range), and clean analytics.</p>
 
+<!-- Live links row -->
+<p align="center">
+  <a href="https://ledgerlite-zc0w.onrender.com" target="_blank"><b>🔥 Live Demo</b></a>
+  &nbsp;•&nbsp;
+  <a href="https://ledgerlite-mern.onrender.com/api" target="_blank">API Health</a>
+</p>
+
 <p align="center">
   <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react" />
   <img src="https://img.shields.io/badge/Vite-Build-646CFF?style=for-the-badge&logo=vite" />
@@ -12,7 +19,7 @@
   <img src="https://img.shields.io/badge/Deployed-Client/Server-brightgreen?style=for-the-badge" />
 </p>
 
----
+
 
 ## 🚀 Features
 
