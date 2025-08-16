@@ -1,6 +1,6 @@
 # Ledgerlite — Demo Video
 
-**Video link:** [Watch on YouTube](https://youtu.be/PUT-YOUR-VIDEO-LINK-HERE)
+**Video link:** [Watch on YouTube](https://www.youtube.com/watch?v=QITzoYyzlaQ)
 
 **Duration:** ~3–5 minutes
 
