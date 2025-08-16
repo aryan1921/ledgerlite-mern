@@ -43,7 +43,7 @@
 
 ### 1) Clone
 ```bash
-git clone https://github.com/your-username/ledgerlite-mern.git
+git clone https://github.com/aryan1921/ledgerlite-mern.git
 cd ledgerlite-mern
 
 ```
