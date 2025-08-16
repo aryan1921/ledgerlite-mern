@@ -36,17 +36,23 @@ function Shell({ children, isAuthed }) {
 
   return (
     <div className="min-h-screen ">
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-[#0b1220] border-b border-[#1f2a44] text-white">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <h1 className="font-semibold text-gray-900">Ledgerlite</h1>
+            <h1 className="font-semibold">Ledgerlite</h1>
             {isAuthed && (
               <nav className="flex items-center gap-2 text-sm">
-                <Link className="text-gray-700 hover:text-gray-900 underline underline-offset-2" to="/dashboard">
+                <Link
+                  className="text-[#93c5fd] hover:text-white underline underline-offset-2"
+                  to="/dashboard"
+                >
                   Dashboard
                 </Link>
-                <span className="text-gray-300">·</span>
-                <Link className="text-gray-700 hover:text-gray-900 underline underline-offset-2" to="/analytics">
+                <span className="text-slate-400">·</span>
+                <Link
+                  className="text-[#93c5fd] hover:text-white underline underline-offset-2"
+                  to="/analytics"
+                >
                   Analytics
                 </Link>
               </nav>
@@ -54,14 +60,14 @@ function Shell({ children, isAuthed }) {
           </div>
 
           <div className="flex items-center gap-3">
-            {userEmail && <span className="text-xs text-gray-600">{userEmail}</span>}
-            <span className="text-xs text-gray-500">
-              API: <code className="text-gray-700">{import.meta.env.VITE_API_BASE}</code>
+            {userEmail && <span className="text-xs text-slate-300">{userEmail}</span>}
+            <span className="text-xs text-slate-400">
+              API: <code className="text-slate-200">{import.meta.env.VITE_API_BASE}</code>
             </span>
             {isAuthed && (
               <button
                 onClick={out}
-                className="border border-gray-300 px-3 py-1 text-sm rounded-md text-gray-700 hover:bg-gray-50"
+                className="border border-[#334155] px-3 py-1 text-sm rounded-md hover:bg-[#0f172a]"
               >
                 Logout
               </button>
@@ -69,6 +75,7 @@ function Shell({ children, isAuthed }) {
           </div>
         </div>
       </header>
+
 
       <main className="p-4">{children}</main>
     </div>

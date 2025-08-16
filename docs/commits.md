@@ -31,3 +31,25 @@
 3. **154f731** — Added the architecture.md file.  
 4. **1b70fb8** — Updated commits.md.  
 
+
+## Client & Analytics (next ~15 commits)
+![Commit log](commits-phase-2.png)
+
+### Checkpoint descriptions:
+1. **1b70fb8** — Updated `commits.md`.
+2. **154f731** — Added `architecture.md`.
+3. **58636ce** — Updated Postman collection.
+4. **19c6297** — Finished API testing and documentation.
+
+5. **664edb1** — Added dependencies for the client.
+6. **28c03a1** — Updated `main.jsx`.
+7. **d65857e** — Updated `App.jsx`.
+8. **43f5ac0** — Added JSX pages and client-side API wrappers.
+9. **5be0b8e** — Tailwind bug fixes.
+10. **cb97f56** — Client-side routing bug fixes.
+11. **ea09ac5** — Minimal UI changes.
+12. **b56dec3** — Added monthly tracking (backend `from`/`to` support + client params).
+13. **beb2b42** — Dashboard updates to reflect new features (filters, stats).
+14. **fab250b** — Added the Analytics page (charts for time, category, reimbursement).
+15. **2386177** — Added the Landing page (hero + feature cards + CTA).
+
